@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">android_homework</string>
+    <string name="username">cake.okay</string>
+    <string name="profile_description">Торты на заказ Казань</string>
+    <string name="category">Art</string>
+    <string name="name">💫Гузель</string>
+    <string name="slogan">✨Больше, чем просто сладости</string>
+    <string name="lessons">🎨Уроки по росписи</string>
+    <string name="lessons_acc_link">\@cakeokay.art</string>
+    <string name="contacts">📩+7-917-918-39-41 Whatsapp</string>
+    <string name="prices_link">👇цены и ассортимент по ссылке</string>
+    <string name="see_translation">See Translation</string>
+    <string name="website">cakeokay.wixsite.com/cakeokay</string>
+    <string name="address">Baki urmanche 10, Kazan, Tatarstan 420064</string>
+    <string name="follow">Follow</string>
+    <string name="message">Message</string>
+    <string name="contact">Contact</string>
+    <string name="high_1">Отзывы</string>
+    <string name="high_2">За кадром</string>
+    <string name="high_3">Yum</string>
+    <string name="high_4">Шок.фигурки</string>
+    <string name="posts">Posts</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="posts_num">835</string>
+    <string name="followers_num">12.6K</string>
+    <string name="following_num">190</string>
+    <string name="edit_name">Edit username</string>
+    <string name="done">Done</string>
 </resources>
