@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_home"
+        android:title=""
+        android:icon="@drawable/ic_outline_home"
+        android:checkable="false"/>
+    <item
+        android:id="@+id/action_search"
+        android:title=""
+        android:icon="@drawable/ic_icons8_search" />
+    <item
+        android:id="@+id/action_reels"
+        android:title=""
+        android:icon="@drawable/ic_icons8_instagram_reels_black" />
+    <item
+        android:id="@+id/action_activity"
+        android:title=""
+        android:icon="@drawable/cards_heart_outline" />
+    <item
+        android:id="@+id/action_user"
+        android:title=""
+        android:icon="@drawable/account_circle_outline" />
+</menu>
