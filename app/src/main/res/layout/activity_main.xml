@@ -7,12 +7,122 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/tv_page_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="144dp"
+        android:text="@string/send_email"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/et_to"
+        android:layout_width="220dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="60dp"
+        android:hint="@string/title_hint"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        app:layout_constraintStart_toEndOf="@id/tv_title"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vert_end"
+        app:layout_constraintTop_toBottomOf="@+id/tv_page_title" />
+
+    <EditText
+        android:id="@+id/et_category"
+        android:layout_width="220dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        android:hint="@string/category_hint"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vert_end"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@id/tv_text"
+        app:layout_constraintTop_toBottomOf="@+id/et_to" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vert_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vert_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:text="@string/title"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/et_to"
+        app:layout_constraintEnd_toStartOf="@+id/et_to"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vert_start"
+        app:layout_constraintTop_toTopOf="@+id/et_to" />
+
+    <TextView
+        android:id="@+id/tv_category"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:text="@string/category"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="@+id/et_category"
+        app:layout_constraintEnd_toStartOf="@+id/et_category"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vert_start"
+        app:layout_constraintTop_toTopOf="@+id/et_category" />
+
+    <Button
+        android:id="@+id/button_send_email"
+        android:layout_width="192dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/btn_grey"
+        android:onClick="onClickSendEmail"
+        android:text="@string/send_email"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vert_end"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vert_start"
+        app:layout_constraintTop_toBottomOf="@+id/et_text" />
+
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintBottom_toBottomOf="@+id/et_text"
+        app:layout_constraintEnd_toStartOf="@+id/et_text"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vert_start"
+        app:layout_constraintTop_toTopOf="@+id/et_text" />
+
+    <EditText
+        android:id="@+id/et_text"
+        android:layout_width="220dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        android:hint="@string/text_hint"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        app:layout_constraintStart_toEndOf="@id/tv_text"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vert_end"
+        app:layout_constraintTop_toBottomOf="@+id/et_category" />
 </androidx.constraintlayout.widget.ConstraintLayout>

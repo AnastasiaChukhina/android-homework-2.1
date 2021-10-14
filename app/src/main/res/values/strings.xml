@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">android_homework</string>
+    <string name="send_email">Send Email</string>
+    <string name="title">To:</string>
+    <string name="title_hint">to</string>
+    <string name="category">Category:</string>
+    <string name="category_hint">category</string>
+    <string name="text">Text:</string>
+    <string name="text_hint">text</string>
+    <string name="received_text">Received Text:</string>
 </resources>
