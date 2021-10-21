@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">android_homework</string>
+    <string name="fragment_home">HomeFragment</string>
+    <string name="fragment_search">SearchFragment</string>
+    <string name="fragment_reels">ReelsFragment</string>
+    <string name="fragment_activity">ActivityFragment</string>
+    <string name="fragment_user">UserFragment</string>
 </resources>
