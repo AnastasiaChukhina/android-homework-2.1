@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">android_homework</string>
+    <string name="cake_name_preview">Name</string>
+    <string name="cake_homeland_preview">Country</string>
+    <string name="cake_name">Dessert name:</string>
+    <string name="cake_homeland">Homeland:</string>
+    <string name="name">Name</string>
+    <string name="list_name">Desserts</string>
 </resources>
