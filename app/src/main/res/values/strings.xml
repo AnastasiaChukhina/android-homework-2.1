@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">android_homework</string>
+    <string name="home_icon">home</string>
+    <string name="rv_list">list</string>
+    <string name="cv_list">cards</string>
+    <string name="fruit_name">Fruit</string>
+    <string name="fruit_vitamins">Vitamins</string>
+    <string name="home_fragment">HomeFragment</string>
+    <string name="list_name">Fruits</string>
+    <string name="item_position">Position:</string>
 </resources>
