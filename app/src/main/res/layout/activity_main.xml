@@ -5,18 +5,107 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity"
+    android:background="@color/bg_primary">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/container"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_bar"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_hours"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/til_minutes"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_hours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hours"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_minutes"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/til_hours"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_minutes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:hint="@string/minutes" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/start"
+        android:backgroundTint="@color/buttons"
+        app:layout_constraintEnd_toEndOf="@+id/til_hours"
+        app:layout_constraintStart_toStartOf="@+id/til_hours"
+        app:layout_constraintTop_toBottomOf="@+id/til_hours" />
+
+    <Button
+        android:id="@+id/btn_stop"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/stop"
+        android:backgroundTint="@color/buttons"
+        app:layout_constraintEnd_toEndOf="@+id/til_minutes"
+        app:layout_constraintStart_toStartOf="@+id/til_minutes"
+        app:layout_constraintTop_toBottomOf="@+id/til_minutes" />
+
+    <TextView
+        android:id="@+id/tv_set_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="240dp"
+        android:textColor="@color/buttons"
+        android:textSize="24sp"
+        android:text="@string/set_time_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/tv_delimiter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delimiter"
+        android:textSize="22sp"
+        android:textColor="@color/buttons"
+        app:layout_constraintStart_toEndOf="@id/til_hours"
+        app:layout_constraintEnd_toStartOf="@id/til_minutes"
+        app:layout_constraintBottom_toBottomOf="@id/til_minutes"
+        app:layout_constraintTop_toTopOf="@id/til_minutes"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
