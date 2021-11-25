@@ -8,5 +8,5 @@
     <string name="set_time_text">Set time:</string>
     <string name="delimiter">:</string>
     <string name="alarm">Good Morning</string>
-    <string name="wake_up">Look at the clock, it is time to wake up!</string>
+    <string name="wake_up">It is time to wake up!</string>
 </resources>

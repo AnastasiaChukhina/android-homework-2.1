@@ -20,77 +20,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_hours"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/til_minutes"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_hours"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hours"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_minutes"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        app:layout_constraintStart_toEndOf="@id/til_hours"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_minutes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:hint="@string/minutes" />
-    </com.google.android.material.textfield.TextInputLayout>
-
     <Button
         android:id="@+id/btn_start"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/start"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="@color/buttons"
-        app:layout_constraintEnd_toEndOf="@+id/til_hours"
-        app:layout_constraintStart_toStartOf="@+id/til_hours"
-        app:layout_constraintTop_toBottomOf="@+id/til_hours" />
+        android:text="@string/start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_stop"
+        app:layout_constraintStart_toStartOf="@+id/btn_set_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_hours"
+        app:layout_constraintVertical_bias="0.075" />
 
     <Button
         android:id="@+id/btn_stop"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/stop"
         android:backgroundTint="@color/buttons"
-        app:layout_constraintEnd_toEndOf="@+id/til_minutes"
-        app:layout_constraintStart_toStartOf="@+id/til_minutes"
-        app:layout_constraintTop_toBottomOf="@+id/til_minutes" />
+        android:text="@string/stop"
+        app:flow_horizontalBias="0.065"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_set_time"
+        app:layout_constraintStart_toEndOf="@id/btn_start"
+        app:layout_constraintTop_toBottomOf="@+id/tv_minutes"
+        app:layout_constraintVertical_bias="0.075" />
 
-    <TextView
-        android:id="@+id/tv_set_time"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btn_set_time"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="240dp"
-        android:textColor="@color/buttons"
-        android:textSize="24sp"
+        android:backgroundTint="@color/buttons"
         android:text="@string/set_time_text"
+        android:textColor="@color/white"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -100,12 +65,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/delimiter"
-        android:textSize="22sp"
-        android:textColor="@color/buttons"
-        app:layout_constraintStart_toEndOf="@id/til_hours"
-        app:layout_constraintEnd_toStartOf="@id/til_minutes"
-        app:layout_constraintBottom_toBottomOf="@id/til_minutes"
-        app:layout_constraintTop_toTopOf="@id/til_minutes"/>
+        android:textSize="24sp"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/tv_minutes"
+        app:layout_constraintStart_toEndOf="@id/tv_hours"
+        app:layout_constraintBottom_toBottomOf="@id/tv_hours"
+        app:layout_constraintTop_toTopOf="@id/tv_hours"/>
 
+    <TextView
+        android:id="@+id/tv_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:text="@string/hours"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_minutes"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.489" />
+
+    <TextView
+        android:id="@+id/tv_minutes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:text="@string/minutes"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_hours"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.489" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,7 @@ package com.itis.android_homework.notifications
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.NotificationManager.IMPORTANCE_DEFAULT
+import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -27,8 +27,10 @@ class AlarmReceiver: BroadcastReceiver() {
         manager = getNotificationManager(context)
         createNotificationChannel(context, manager)
 
-        val intent = getIntent(context)
-        build(intent, context)
+        build(
+            getIntent(context),
+            context
+        )
     }
 
     private fun build(intent: PendingIntent, context: Context?) {
@@ -36,7 +38,6 @@ class AlarmReceiver: BroadcastReceiver() {
             NotificationCompat.Builder(it, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_outline_access_time_24)
                 .setContentTitle(it.getString(R.string.alarm))
-                .setShowWhen(false)
                 .setAutoCancel(true)
                 .setContentIntent(intent)
                 .setContentText(it.getString(R.string.wake_up))
@@ -44,24 +45,12 @@ class AlarmReceiver: BroadcastReceiver() {
         manager?.notify(1, builder?.build())
     }
 
-    private fun getNotificationManager(
-        context: Context?
-    ): NotificationManager=
-        context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-    private fun setAudioAttributes(): AudioAttributes? {
-        return AudioAttributes.Builder()
-            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-            .build()
-    }
-
     private fun createNotificationChannel(context: Context?, manager: NotificationManager?){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel(
                 CHANNEL_ID,
                 context?.getString(R.string.alarm),
-                IMPORTANCE_DEFAULT
+                IMPORTANCE_HIGH
             ).apply {
                 description = context?.getString(R.string.wake_up)
                 lightColor = Color.BLUE
@@ -84,6 +73,18 @@ class AlarmReceiver: BroadcastReceiver() {
                 PendingIntent.FLAG_ONE_SHOT
             )
         }
+    }
+
+    private fun getNotificationManager(
+        context: Context?
+    ): NotificationManager=
+        context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+    private fun setAudioAttributes(): AudioAttributes? {
+        return AudioAttributes.Builder()
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+            .build()
     }
 
     private fun Context.getSoundUri(

@@ -41,5 +41,7 @@ class AlarmService(
         timeInMillis = System.currentTimeMillis()
         set(Calendar.HOUR_OF_DAY, hours)
         set(Calendar.MINUTE, minutes)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
     }
 }
