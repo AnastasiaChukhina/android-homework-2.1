@@ -4,6 +4,7 @@ import com.itis.android_homework.R
 import com.itis.android_homework.models.Song
 
 object SongRepository {
+    const val DEFAULT_SONG_ID = 0
     private var cursor = 0;
 
     val songs = arrayListOf(

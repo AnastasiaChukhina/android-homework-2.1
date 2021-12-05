@@ -9,7 +9,7 @@
         android:id="@+id/iv_cover"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="72dp"
         android:theme="@style/ShapeAppearanceOverlay.App.CornerSize2Percent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,48 +51,6 @@
         app:layout_constraintStart_toStartOf="@id/iv_cover"
         app:layout_constraintTop_toBottomOf="@+id/tv_author" />
 
-
-    <ImageButton
-        android:id="@+id/img_btn_pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/img_btn_fast_rewind"
-        app:layout_constraintEnd_toStartOf="@+id/img_btn_fast_forward"
-        app:layout_constraintStart_toEndOf="@+id/img_btn_fast_rewind"
-        app:layout_constraintTop_toTopOf="@+id/img_btn_fast_rewind"
-        app:srcCompat="@drawable/ic_baseline_pause_48" />
-
-    <ImageButton
-        android:id="@+id/img_btn_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/img_btn_fast_rewind"
-        app:layout_constraintEnd_toStartOf="@+id/img_btn_fast_forward"
-        app:layout_constraintStart_toEndOf="@+id/img_btn_fast_rewind"
-        app:layout_constraintTop_toTopOf="@+id/img_btn_fast_rewind"
-        app:srcCompat="@drawable/ic_baseline_play_arrow_48" />
-
-    <ImageButton
-        android:id="@+id/img_btn_fast_forward"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/img_btn_fast_rewind"
-        app:layout_constraintEnd_toEndOf="@+id/pb_progress"
-        app:layout_constraintTop_toTopOf="@+id/img_btn_fast_rewind"
-        app:srcCompat="@drawable/ic_baseline_fast_forward_48" />
-
-    <ImageButton
-        android:id="@+id/img_btn_fast_rewind"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
-        app:layout_constraintStart_toStartOf="@+id/pb_progress"
-        app:layout_constraintTop_toBottomOf="@+id/pb_progress"
-        app:srcCompat="@drawable/ic_baseline_fast_rewind_48" />
-
     <TextView
         android:id="@+id/tv_already_played"
         android:layout_width="wrap_content"
@@ -103,12 +61,79 @@
         app:layout_constraintTop_toBottomOf="@+id/pb_progress" />
 
     <TextView
-        android:id="@+id/tv_not_played_yet"
+        android:id="@+id/tv_song_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/not_played_yet"
         android:textColor="@color/primary"
         app:layout_constraintEnd_toEndOf="@+id/pb_progress"
         app:layout_constraintTop_toBottomOf="@+id/pb_progress" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_buttons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/iv_cover"
+        app:layout_constraintStart_toStartOf="@+id/iv_cover">
+
+        <ImageButton
+            android:id="@+id/img_btn_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_primary"
+            app:layout_constraintStart_toEndOf="@id/img_btn_play"
+            app:layout_constraintBottom_toBottomOf="@+id/img_btn_fast_rewind"
+            app:layout_constraintEnd_toStartOf="@+id/img_btn_fast_forward"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_stop_48" />
+
+        <ImageButton
+            android:id="@+id/img_btn_fast_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/light_primary"
+            app:layout_constraintBottom_toBottomOf="@+id/img_btn_fast_rewind"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_fast_forward_48" />
+
+        <ImageButton
+            android:id="@+id/img_btn_fast_rewind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/light_primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_fast_rewind_48" />
+
+        <ImageButton
+            android:id="@+id/img_btn_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_primary"
+            app:layout_constraintBottom_toBottomOf="@+id/img_btn_fast_rewind"
+            app:layout_constraintEnd_toStartOf="@+id/img_btn_stop"
+            app:layout_constraintStart_toEndOf="@+id/img_btn_fast_rewind"
+            app:layout_constraintTop_toTopOf="@+id/img_btn_fast_rewind"
+            app:srcCompat="@drawable/ic_baseline_pause_48" />
+
+        <ImageButton
+            android:id="@+id/img_btn_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:backgroundTint="@color/light_primary"
+            app:layout_constraintBottom_toBottomOf="@+id/img_btn_fast_rewind"
+            app:layout_constraintEnd_toStartOf="@+id/img_btn_stop"
+            app:layout_constraintStart_toEndOf="@+id/img_btn_fast_rewind"
+            app:layout_constraintTop_toTopOf="@+id/img_btn_fast_rewind"
+            app:srcCompat="@drawable/ic_baseline_play_arrow_48" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

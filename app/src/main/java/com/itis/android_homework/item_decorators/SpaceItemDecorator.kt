@@ -1,4 +1,4 @@
-package com.itis.android_homework.item_decorarors
+package com.itis.android_homework.item_decorators
 
 import android.content.Context
 import android.graphics.Rect
@@ -23,27 +23,15 @@ class SpaceItemDecorator(
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        val spacingMiddle = (spacingPx * 0.75).toInt()
+        val spacingMiddle = (spacingPx * 0.25).toInt()
         val viewHolder = parent.getChildViewHolder(view)
 
         val currentPosition = parent.getChildAdapterPosition(view).takeIf {
             it != RecyclerView.NO_POSITION
         } ?: viewHolder.oldPosition
 
-        when (currentPosition) {
-            0 -> {
-                outRect.top = spacingPx
-                outRect.bottom = spacingMiddle
-            }
-            state.itemCount - 1 -> {
-                outRect.top = spacingMiddle
-                outRect.bottom = spacingPx
-            }
-            else -> {
-                outRect.top = spacingMiddle
-                outRect.bottom = spacingMiddle
-            }
-        }
+        outRect.top = spacingMiddle
+        outRect.bottom = spacingMiddle
         outRect.left = spacingPx
         outRect.right = spacingPx
     }
