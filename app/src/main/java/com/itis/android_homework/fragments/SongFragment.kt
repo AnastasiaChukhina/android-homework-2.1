@@ -70,13 +70,12 @@ class SongFragment : Fragment(R.layout.song_fragment) {
     }
 
     private fun setView(id: Int) {
-        val current = SongRepository.getSongById(id)
+        val current = SongRepository.songs[id]
 
         binding?.apply {
             tvSongName.text = current.title
             tvAuthor.text = current.author
             ivCover.setImageResource(current.cover)
-            setDurationView(id)
         }
 
         setPlayView()
@@ -108,17 +107,9 @@ class SongFragment : Fragment(R.layout.song_fragment) {
             }
             imgBtnStop.setOnClickListener {
                 musicService?.stop()
-                (activity as? MainActivity)?.onBackPressed()
+                setPauseView()
             }
         }
-    }
-
-    private fun setDurationView(id: Int) {
-        val duration = SongRepository.songs[id].duration
-        val hh = (duration / 60).toString()
-        var mm = (duration % 60).toString()
-        if (mm.length == 1) mm = "0${mm}"
-        binding?.tvSongDuration?.text = "${hh}:${mm}"
     }
 
     private fun setPauseView() {

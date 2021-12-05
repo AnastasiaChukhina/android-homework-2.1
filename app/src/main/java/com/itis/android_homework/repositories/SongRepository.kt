@@ -105,6 +105,4 @@ object SongRepository {
             R.raw.un_village
         )
     )
-
-    fun getSongById(id: Int): Song = songs[id]
 }

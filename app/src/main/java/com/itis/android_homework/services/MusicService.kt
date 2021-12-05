@@ -8,7 +8,7 @@ import android.os.IBinder
 import com.itis.android_homework.models.Song
 import com.itis.android_homework.repositories.SongRepository
 
-class MusicService: Service() {
+class MusicService : Service() {
     private var currentId: Int? = null
     private lateinit var list: List<Song>
     private lateinit var mediaPlayer: MediaPlayer
@@ -26,18 +26,54 @@ class MusicService: Service() {
         notificationService = NotificationService(this)
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        when (intent?.action) {
+            ACTION_STOP -> {
+                if (mediaPlayer.isPlaying) stop()
+                currentId?.let {
+                    notificationService.rebuildNotification(it)
+                }
+            }
+            ACTION_PLAY -> {
+                if (!mediaPlayer.isPlaying) play()
+                currentId?.let {
+                    notificationService.buildNotification(it)
+                }
+            }
+            ACTION_NEXT -> {
+                next()
+                currentId?.let {
+                    notificationService.buildNotification(it)
+                }
+            }
+            ACTION_PREV -> {
+                prev()
+                currentId?.let {
+                    notificationService.buildNotification(it)
+                }
+            }
+            ACTION_PAUSE -> {
+                pause()
+                currentId?.let {
+                    notificationService.rebuildNotification(it)
+                }
+            }
+        }
+        return super.onStartCommand(intent, flags, startId)
+    }
+
     fun prev() {
         currentId?.let {
-            currentId = if(it - 1 >= 0) it - 1
-            else SongRepository.DEFAULT_SONG_ID
+            currentId = if (it - 1 >= 0) it - 1
+            else SongRepository.songs.size - 1
         }
         setSong(currentId ?: SongRepository.DEFAULT_SONG_ID)
         play()
     }
 
     fun next() {
-        currentId?.also{
-            currentId = if(it + 1 < list.size) it + 1
+        currentId?.also {
+            currentId = if (it + 1 < list.size) it + 1
             else SongRepository.DEFAULT_SONG_ID
         }
         setSong(currentId ?: SongRepository.DEFAULT_SONG_ID)
@@ -58,14 +94,17 @@ class MusicService: Service() {
     }
 
     fun setSong(id: Int) {
-        with(mediaPlayer){
-            if(isPlaying) stop()
+        with(mediaPlayer) {
+            if (isPlaying) stop()
         }
         mediaPlayer = MediaPlayer.create(
             applicationContext,
             list[id].audio
         )
         currentId = id
+        currentId?.let {
+            notificationService.buildNotification(it)
+        }
     }
 
     fun getCurrentId() = currentId
@@ -75,7 +114,7 @@ class MusicService: Service() {
         mediaPlayer.release()
     }
 
-    inner class MusicBinder : Binder(){
+    inner class MusicBinder : Binder() {
         fun getService(): MusicService = this@MusicService
     }
 }

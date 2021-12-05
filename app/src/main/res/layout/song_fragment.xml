@@ -9,7 +9,7 @@
         android:id="@+id/iv_cover"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="76dp"
         android:theme="@style/ShapeAppearanceOverlay.App.CornerSize2Percent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,39 +41,11 @@
         app:layout_constraintStart_toStartOf="@+id/tv_song_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_song_name" />
 
-    <ProgressBar
-        android:id="@+id/pb_progress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@id/iv_cover"
-        app:layout_constraintStart_toStartOf="@id/iv_cover"
-        app:layout_constraintTop_toBottomOf="@+id/tv_author" />
-
-    <TextView
-        android:id="@+id/tv_already_played"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/already_played"
-        android:textColor="@color/primary"
-        app:layout_constraintStart_toStartOf="@+id/pb_progress"
-        app:layout_constraintTop_toBottomOf="@+id/pb_progress" />
-
-    <TextView
-        android:id="@+id/tv_song_duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/not_played_yet"
-        android:textColor="@color/primary"
-        app:layout_constraintEnd_toEndOf="@+id/pb_progress"
-        app:layout_constraintTop_toBottomOf="@+id/pb_progress" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_buttons"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="88dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/iv_cover"
         app:layout_constraintStart_toStartOf="@+id/iv_cover">
