@@ -30,42 +30,30 @@ class MusicService : Service() {
         when (intent?.action) {
             ACTION_STOP -> {
                 if (mediaPlayer.isPlaying) stop()
-                currentId?.let {
-                    notificationService.rebuildNotification(it)
-                }
             }
             ACTION_PLAY -> {
                 if (!mediaPlayer.isPlaying) play()
-                currentId?.let {
-                    notificationService.buildNotification(it)
-                }
             }
             ACTION_NEXT -> {
                 next()
-                currentId?.let {
-                    notificationService.buildNotification(it)
-                }
             }
             ACTION_PREV -> {
                 prev()
-                currentId?.let {
-                    notificationService.buildNotification(it)
-                }
             }
             ACTION_PAUSE -> {
                 pause()
-                currentId?.let {
-                    notificationService.rebuildNotification(it)
-                }
             }
         }
         return super.onStartCommand(intent, flags, startId)
     }
 
+    fun isPlaying(): Boolean = mediaPlayer.isPlaying
+
     fun prev() {
         currentId?.let {
             currentId = if (it - 1 >= 0) it - 1
             else SongRepository.songs.size - 1
+            notificationService.buildNotification(it)
         }
         setSong(currentId ?: SongRepository.DEFAULT_SONG_ID)
         play()
@@ -75,16 +63,19 @@ class MusicService : Service() {
         currentId?.also {
             currentId = if (it + 1 < list.size) it + 1
             else SongRepository.DEFAULT_SONG_ID
+            notificationService.buildNotification(it)
         }
         setSong(currentId ?: SongRepository.DEFAULT_SONG_ID)
         play()
     }
 
     fun pause() {
+        notificationService.rebuildNotification(currentId ?: SongRepository.DEFAULT_SONG_ID)
         mediaPlayer.pause()
     }
 
     fun play() {
+        notificationService.buildNotification(currentId ?: SongRepository.DEFAULT_SONG_ID)
         mediaPlayer.start()
     }
 
@@ -107,7 +98,7 @@ class MusicService : Service() {
         }
     }
 
-    fun getCurrentId() = currentId
+    fun getCurrentId(): Int? = currentId
 
     override fun onDestroy() {
         super.onDestroy()

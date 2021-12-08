@@ -9,12 +9,13 @@ import com.itis.android_homework.models.Song
 class SongHolder(
     private val binding: ItemSongBinding,
     private val action: (Int) -> Unit
-): RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Song) {
         with(binding) {
             tvSongName.text = item.title
             tvAuthor.text = item.author
+            tvSongDuration.text = setSongDuration(item.duration)
             ivImage.setImageResource(item.cover)
         }
         itemView.setOnClickListener {
@@ -22,16 +23,24 @@ class SongHolder(
         }
     }
 
+    private fun setSongDuration(duration: Int): String {
+        val min = (duration / 60).toString()
+        val sec = (duration % 60).toString()
+        return if(sec.length == 1) "${min}:0${sec}"
+                else "${min}:${sec}"
+    }
+
     companion object {
-        fun create (
+        fun create(
             parent: ViewGroup,
             action: (Int) -> Unit
-        ) = SongHolder (
+        ) = SongHolder(
             ItemSongBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             ),
-            action)
+            action
+        )
     }
 }

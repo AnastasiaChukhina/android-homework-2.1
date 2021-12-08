@@ -42,4 +42,14 @@
         app:layout_constraintTop_toBottomOf="@id/tv_song_name"
         tools:text="@string/song_author" />
 
+    <TextView
+        android:id="@+id/tv_song_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@string/song_duration"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

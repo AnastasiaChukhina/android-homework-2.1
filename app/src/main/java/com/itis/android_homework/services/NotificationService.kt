@@ -8,10 +8,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
+import androidx.navigation.NavDeepLinkBuilder
 import com.itis.android_homework.MainActivity
 import com.itis.android_homework.R
 import com.itis.android_homework.repositories.SongRepository
+import androidx.media.app.NotificationCompat.MediaStyle as NotificationCompatMedia
 
 const val ACTION_PREV = "PREVIOUS"
 const val ACTION_PAUSE = "PAUSE"
@@ -29,7 +32,6 @@ class NotificationService(
     private var nextPendingIntent: PendingIntent? = null
     private var stopPendingIntent: PendingIntent? = null
     private var playPendingIntent: PendingIntent? = null
-    private var notificationPendingIntent: PendingIntent? = null
 
     private val manager by lazy {
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -41,7 +43,9 @@ class NotificationService(
                 CHANNEL_ID,
                 context.getString(R.string.music_channel_name),
                 IMPORTANCE_DEFAULT
-            ).also {
+            ).apply{
+                description = context.getString(R.string.music_channel_desc)
+            }.also {
                 manager.createNotificationChannel(it)
             }
 
@@ -60,14 +64,6 @@ class NotificationService(
             val stopIntent = Intent(context, MusicService::class.java).apply {
                 action = ACTION_STOP
             }
-            val notificationIntent = Intent(context, MainActivity::class.java)
-            notificationPendingIntent =
-                PendingIntent.getActivities(
-                    context,
-                    0,
-                    arrayOf(notificationIntent),
-                    PendingIntent.FLAG_ONE_SHOT
-                )
             prevPendingIntent = PendingIntent.getService(context, 1, prevIntent, 0)
             pausePendingIntent = PendingIntent.getService(context, 2, pauseIntent, 0)
             nextPendingIntent = PendingIntent.getService(context, 3, nextIntent, 0)
@@ -81,21 +77,21 @@ class NotificationService(
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_baseline_music_note_24)
-            .addAction(R.drawable.ic_baseline_fast_rewind_24, "Previous", prevPendingIntent)
-            .addAction(R.drawable.ic_baseline_pause_24, "Pause", pausePendingIntent)
-            .addAction(R.drawable.ic_baseline_stop_24, "Stop", stopPendingIntent)
-            .addAction(R.drawable.ic_baseline_fast_forward_24, "Next", nextPendingIntent)
-            .setContentTitle(song.title)
-            .setContentText(song.author)
-            .setStyle(androidx.media.app.NotificationCompat.MediaStyle())
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     context.resources,
                     song.cover
                 )
             )
+            .addAction(R.drawable.ic_baseline_fast_rewind_24, "Previous", prevPendingIntent)
+            .addAction(R.drawable.ic_baseline_pause_24, "Pause", pausePendingIntent)
+            .addAction(R.drawable.ic_baseline_stop_24, "Stop", stopPendingIntent)
+            .addAction(R.drawable.ic_baseline_fast_forward_24, "Next", nextPendingIntent)
+            .setContentTitle(song.title)
+            .setContentText(song.author)
+            .setStyle(NotificationCompatMedia())
             .setSilent(true)
-            .setContentIntent(notificationPendingIntent)
+            .setContentIntent(setNotificationAction(id))
 
         manager.notify(NOTIFICATION_ID, builder.build())
     }
@@ -105,22 +101,34 @@ class NotificationService(
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_baseline_music_note_24)
-            .addAction(R.drawable.ic_baseline_fast_rewind_24, "Previous", prevPendingIntent)
-            .addAction(R.drawable.ic_baseline_play_arrow_24, "Play", playPendingIntent)
-            .addAction(R.drawable.ic_baseline_stop_24, "Stop", stopPendingIntent)
-            .addAction(R.drawable.ic_baseline_fast_forward_24, "Next", nextPendingIntent)
-            .setContentTitle(song.title)
-            .setContentText(song.author)
-            .setStyle(androidx.media.app.NotificationCompat.MediaStyle())
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     context.resources,
                     song.cover
                 )
             )
+            .addAction(R.drawable.ic_baseline_fast_rewind_24, "Previous", prevPendingIntent)
+            .addAction(R.drawable.ic_baseline_play_arrow_24, "Play", playPendingIntent)
+            .addAction(R.drawable.ic_baseline_stop_24, "Stop", stopPendingIntent)
+            .addAction(R.drawable.ic_baseline_fast_forward_24, "Next", nextPendingIntent)
+            .setContentTitle(song.title)
+            .setContentText(song.author)
+            .setStyle(NotificationCompatMedia())
             .setSilent(true)
-            .setContentIntent(notificationPendingIntent)
+            .setContentIntent(setNotificationAction(id))
 
         manager.notify(NOTIFICATION_ID, builder.build())
+    }
+
+    private fun setNotificationAction(id: Int): PendingIntent{
+        val bundle = Bundle()
+        bundle.putInt("ARG_SONG_ID", id)
+
+        return NavDeepLinkBuilder(context)
+            .setComponentName(MainActivity::class.java)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.songFragment)
+            .setArguments(bundle)
+            .createPendingIntent()
     }
 }

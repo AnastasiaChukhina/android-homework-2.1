@@ -23,7 +23,7 @@ class SongFragment : Fragment(R.layout.song_fragment) {
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             musicService = (service as? MusicService.MusicBinder)?.getService()
-            if(musicService != null){
+            if (musicService != null) {
                 initListeners()
                 arguments?.getInt("ARG_SONG_ID")?.let { id ->
                     setView(id)
@@ -67,6 +67,9 @@ class SongFragment : Fragment(R.layout.song_fragment) {
             connection,
             Context.BIND_AUTO_CREATE
         )
+        musicService?.getCurrentId()?.also {
+            setView(it)
+        }
     }
 
     private fun setView(id: Int) {
@@ -77,17 +80,24 @@ class SongFragment : Fragment(R.layout.song_fragment) {
             tvAuthor.text = current.author
             ivCover.setImageResource(current.cover)
         }
-
-        setPlayView()
-        startMusic(id)
+        if (getCurrentId() != id) {
+            startMusic(id)
+            setPlayView()
+        }
+        else if(!isPlaying()) setPauseView()
+        else setPlayView()
     }
 
-    private fun startMusic(id: Int){
+    private fun startMusic(id: Int) {
         musicService?.setSong(id)
         musicService?.play()
     }
 
-    private fun initListeners(){
+    private fun getCurrentId(): Int? = musicService?.getCurrentId()
+
+    private fun isPlaying(): Boolean = musicService?.isPlaying() == true
+
+    private fun initListeners() {
         binding?.apply {
             imgBtnPause.setOnClickListener {
                 musicService?.pause()
