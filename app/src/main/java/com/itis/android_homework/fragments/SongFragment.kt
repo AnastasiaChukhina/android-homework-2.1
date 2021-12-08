@@ -80,7 +80,7 @@ class SongFragment : Fragment(R.layout.song_fragment) {
             tvAuthor.text = current.author
             ivCover.setImageResource(current.cover)
         }
-        if (getCurrentId() != id) {
+        if (getCurrentId() != id || id == SongRepository.DEFAULT_SONG_ID) {
             startMusic(id)
             setPlayView()
         }
