@@ -2,6 +2,23 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph">
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listFragment">
 
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.itis.android_homework.fragments.ListFragment"
+        android:label="ListFragment" >
+        <action
+            android:id="@+id/action_listFragment_to_songFragment"
+            app:destination="@id/songFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/songFragment"
+        android:name="com.itis.android_homework.fragments.SongFragment"
+        android:label="SongFragment" >
+        <action
+            android:id="@+id/action_songFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
 </navigation>
