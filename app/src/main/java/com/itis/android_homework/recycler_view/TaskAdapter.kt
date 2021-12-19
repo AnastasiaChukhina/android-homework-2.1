@@ -1,4 +1,4 @@
-package com.itis.android_homework.adapter
+package com.itis.android_homework.recycler_view
 
 import android.os.Bundle
 import android.view.ViewGroup

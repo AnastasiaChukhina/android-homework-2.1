@@ -1,8 +1,6 @@
 package com.itis.android_homework.fragments
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -13,7 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.itis.android_homework.R
-import com.itis.android_homework.adapter.TaskAdapter
+import com.itis.android_homework.recycler_view.TaskAdapter
 import com.itis.android_homework.callbacks.SwipeToDeleteCallback
 import com.itis.android_homework.data.AppDatabase
 import com.itis.android_homework.data.entity.Task

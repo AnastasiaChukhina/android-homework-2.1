@@ -3,6 +3,7 @@ package com.itis.android_homework.callbacks
 import android.os.Bundle
 import androidx.recyclerview.widget.DiffUtil
 import com.itis.android_homework.data.entity.Task
+import com.itis.android_homework.helpers.DateToStringConverter
 
 class TaskDiffItemCallback: DiffUtil.ItemCallback<Task>() {
 
@@ -22,13 +23,8 @@ class TaskDiffItemCallback: DiffUtil.ItemCallback<Task>() {
         if(oldItem.title != newItem.title){
             bundle.putString("TITLE", newItem.title)
         }
-        if(oldItem.description != newItem.description){
-            bundle.putString("DESCRIPTION", newItem.description)
-        }
         if(oldItem.date != newItem.date){
-            newItem.date?.let {
-                bundle.putLong("DATE", it.time)
-            }
+            bundle.putString("DATE", DateToStringConverter.convertDateToString(newItem.date))
         }
 
         if(bundle.isEmpty) return null
