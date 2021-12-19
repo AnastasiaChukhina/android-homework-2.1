@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:title="@string/task_editing_text"
-            app:titleTextColor="@color/white"/>
+            app:titleTextColor="@color/white"
+            app:menu="@menu/menu_task"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView

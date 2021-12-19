@@ -7,13 +7,14 @@ import com.itis.android_homework.callbacks.TaskDiffItemCallback
 import com.itis.android_homework.data.entity.Task
 
 class TaskAdapter(
-    private val action: (Int) -> Unit
+    private val actionChoose: (Int) -> Unit,
+    private val actionDelete: (Int) -> Unit
 ): ListAdapter<Task, TaskHolder>(TaskDiffItemCallback()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): TaskHolder = TaskHolder.create(parent, action)
+    ): TaskHolder = TaskHolder.create(parent, actionChoose, actionDelete)
 
     override fun onBindViewHolder(
         holder: TaskHolder,

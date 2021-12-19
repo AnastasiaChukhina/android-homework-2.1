@@ -18,6 +18,9 @@ interface TaskDao {
     @Update
     fun updateTask(task: Task)
 
-    @Delete
-    fun deleteTask(task: Task)
+    @Query("DELETE FROM task WHERE id=:id")
+    fun deleteTaskById(id: Int)
+
+    @Query("DELETE FROM task")
+    fun deleteAllTasks()
 }

@@ -21,18 +21,19 @@ abstract class AppDatabase : RoomDatabase() {
 
         @Volatile
         private var instance: AppDatabase? = null
-        private val dateConverterInstance = DateConverter()
         private val LOCK = Any()
 
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
-            buildDatabase(context).also {
-                instance = it
+        operator fun invoke(context: Context?) = instance ?: synchronized(LOCK) {
+            context?.let {
+                buildDatabase(it).apply {
+                    instance = this
+                }
             }
         }
 
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME)
-                    .addTypeConverter(dateConverterInstance)
+                    .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build()
     }

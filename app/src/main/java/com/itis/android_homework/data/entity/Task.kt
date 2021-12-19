@@ -5,7 +5,7 @@ import java.util.*
 
 @Entity(tableName = "task")
 data class Task(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
     @ColumnInfo(name = "title")
     val title: String,
