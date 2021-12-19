@@ -7,12 +7,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.itis.android_homework.R
 import com.itis.android_homework.recycler_view.TaskAdapter
-import com.itis.android_homework.callbacks.SwipeToDeleteCallback
 import com.itis.android_homework.data.AppDatabase
 import com.itis.android_homework.data.entity.Task
 import com.itis.android_homework.databinding.MainFragmentBinding
@@ -23,6 +21,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
     private var binding: MainFragmentBinding? = null
     private var taskAdapter: TaskAdapter? = null
     private lateinit var database: AppDatabase
+    private lateinit var tasks: List<Task>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,15 +43,9 @@ class MainFragment : Fragment(R.layout.main_fragment) {
                     DividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
                 )
                 addItemDecoration(SpaceItemDecorator(context))
-
-                ItemTouchHelper(SwipeToDeleteCallback{
-                    deleteTask(it)
-                }).attachToRecyclerView(this)
             }
         }
-
-        val tasks = database.taskDao().getAllTasks()
-        updateTasks(tasks)
+        updateTasks()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -65,9 +58,10 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         }
     }
 
-    private fun updateTasks(newList: List<Task>) {
+    private fun updateTasks() {
+        tasks = database.taskDao().getAllTasks()
         binding?.apply {
-            if (newList.isEmpty()) {
+            if (tasks.isEmpty()) {
                 tvNoTasksAdded.visibility = View.VISIBLE
                 rvTasks.visibility = View.GONE
             } else {
@@ -75,18 +69,20 @@ class MainFragment : Fragment(R.layout.main_fragment) {
                 rvTasks.visibility = View.VISIBLE
             }
         }
-        taskAdapter?.submitList(ArrayList(newList))
+        taskAdapter?.submitList(ArrayList(tasks))
     }
 
     private fun deleteAllTasks() {
         if(binding?.rvTasks?.visibility == View.VISIBLE) {
             database.taskDao().deleteAllTasks()
+            updateTasks()
             showMessage("Successfully deleted all tasks.")
         } else showMessage("You have no tasks to be deleted.")
     }
 
     private fun deleteTask(id: Int) {
         database.taskDao().deleteTaskById(id)
+        updateTasks()
         showMessage("Task successfully deleted.")
     }
 

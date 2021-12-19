@@ -23,7 +23,7 @@ class TaskHolder(
             tvTaskDate.text = DateToStringConverter.convertDateToString(item.date)
 
             ivDelete.setOnClickListener {
-                actionDelete
+                actionDelete(item.id)
             }
             itemView.setOnClickListener {
                 actionChoose(item.id)

@@ -14,7 +14,7 @@ data class Task(
     @ColumnInfo(name = "date")
     val date: Date?,
     @ColumnInfo(name = "longitude")
-    val longitude: Double,
+    val longitude: Double?,
     @ColumnInfo(name = "latitude")
-    val latitude: Double
+    val latitude: Double?
 )
