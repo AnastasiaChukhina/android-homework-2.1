@@ -12,4 +12,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         controller = findController(R.id.container)
     }
+
+    override fun onBackPressed() {
+        when(supportFragmentManager.backStackEntryCount){
+            0 -> super.onBackPressed()
+            else -> supportFragmentManager.popBackStack()
+        }
+    }
 }

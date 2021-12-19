@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">android_homework</string>
+    <string name="app_name">Your Task Manager</string>
+    <string name="task_title">Title</string>
+    <string name="task_date">19.12.2021</string>
+    <string name="delete_all">Delete all tasks</string>
+    <string name="save">Save changes</string>
+    <string name="task_editing_text">Task editing</string>
+    <string name="task_title_hint">Title</string>
+    <string name="task_title_text">Set title:</string>
+    <string name="task_desc_title">Set description:</string>
+    <string name="task_desc_hint">Description</string>
+    <string name="task_date_btn">Choose date</string>
+    <string name="longitude">Longitude:</string>
+    <string name="latitude">Latitude:</string>
+    <string name="default_coordinate">0</string>
+    <string name="location">Location:</string>
+    <string name="no_tasks_added">To start work create a new task!</string>
 </resources>

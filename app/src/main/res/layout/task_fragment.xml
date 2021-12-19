@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="@string/task_editing_text"
+            app:titleTextColor="@color/white"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/tv_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TaskTextStyle"
+        android:text="@string/task_title_text"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar" />
+
+    <EditText
+        android:id="@+id/et_title"
+        style="@style/TaskTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/task_title_hint"
+        android:inputType="text"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_text" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="40dp" />
+
+    <TextView
+        android:id="@+id/tv_task_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TaskTextStyle"
+        android:text="@string/task_desc_title"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/et_title" />
+
+    <EditText
+        android:id="@+id/mult_et_desc"
+        style="@style/TaskTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="start|top"
+        android:hint="@string/task_desc_hint"
+        android:inputType="textMultiLine"
+        android:maxHeight="150dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/tv_task_text" />
+
+    <Button
+        android:id="@+id/btn_choose_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/task_date_btn"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/mult_et_desc"/>
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/task_date"
+        android:textSize="20sp"
+        android:visibility="gone"
+        android:textColor="@color/primary_dark"
+        app:layout_constraintTop_toBottomOf="@id/btn_choose_date"
+        app:layout_constraintStart_toStartOf="@id/guideline_start" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="72dp" />
+
+    <TextView
+        android:id="@+id/tv_longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TaskTextStyle"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
+        app:layout_constraintStart_toStartOf="@id/tv_longitude_title"
+        app:layout_constraintEnd_toEndOf="@id/tv_longitude_title"
+        tools:text="@string/default_coordinate" />
+
+    <TextView
+        android:id="@+id/tv_longitude_title"
+        style="@style/TaskTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/longitude"
+        app:layout_constraintEnd_toStartOf="@id/tv_latitude_title"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintBottom_toTopOf="@+id/tv_longitude"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start" />
+
+    <TextView
+        android:id="@+id/tv_latitude_title"
+        style="@style/TaskTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/latitude"
+        app:layout_constraintBottom_toTopOf="@+id/tv_longitude"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/tv_longitude_title" />
+
+    <TextView
+        android:id="@+id/tv_latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TaskTextStyle"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
+        app:layout_constraintStart_toStartOf="@id/tv_latitude_title"
+        app:layout_constraintEnd_toEndOf="@id/tv_latitude_title"
+        tools:text="@string/default_coordinate" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="80dp" />
+
+        <ImageView
+        android:id="@+id/iv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:srcCompat="@drawable/ic_baseline_location_on_24"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintBottom_toTopOf="@id/tv_longitude_title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TaskTextStyle"
+        android:text="@string/location"
+        android:textStyle="bold"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/iv_location"
+        app:layout_constraintBottom_toBottomOf="@id/iv_location"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
