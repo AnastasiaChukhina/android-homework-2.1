@@ -18,17 +18,22 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
 
         private const val DB_NAME = "task.db"
-        private val dateConverterInstance = DateConverter()
-        private var instance: AppDatabase? = null
 
-        fun getInstance(context: Context): AppDatabase? {
-            if(instance == null){
-                instance = Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME)
+        @Volatile
+        private var instance: AppDatabase? = null
+        private val dateConverterInstance = DateConverter()
+        private val LOCK = Any()
+
+        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
+            buildDatabase(context).also {
+                instance = it
+            }
+        }
+
+        private fun buildDatabase(context: Context) =
+            Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME)
                     .addTypeConverter(dateConverterInstance)
                     .fallbackToDestructiveMigration()
                     .build()
-            }
-            return instance
-        }
     }
 }
