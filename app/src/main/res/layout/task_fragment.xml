@@ -102,11 +102,12 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="72dp" />
 
-    <TextView
-        android:id="@+id/tv_longitude"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/et_longitude"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         style="@style/TaskTextStyle"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
         app:layout_constraintStart_toStartOf="@id/tv_longitude_title"
         app:layout_constraintEnd_toEndOf="@id/tv_longitude_title"
@@ -120,7 +121,7 @@
         android:text="@string/longitude"
         app:layout_constraintEnd_toStartOf="@id/tv_latitude_title"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintBottom_toTopOf="@+id/tv_longitude"
+        app:layout_constraintBottom_toTopOf="@+id/et_longitude"
         app:layout_constraintStart_toStartOf="@+id/guideline_start" />
 
     <TextView
@@ -129,15 +130,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/latitude"
-        app:layout_constraintBottom_toTopOf="@+id/tv_longitude"
+        app:layout_constraintBottom_toTopOf="@+id/et_longitude"
         app:layout_constraintEnd_toStartOf="@+id/guideline_end"
         app:layout_constraintStart_toEndOf="@+id/tv_longitude_title" />
 
-    <TextView
-        android:id="@+id/tv_latitude"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/et_latitude"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         style="@style/TaskTextStyle"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
         app:layout_constraintStart_toStartOf="@id/tv_latitude_title"
         app:layout_constraintEnd_toEndOf="@id/tv_latitude_title"
@@ -160,6 +162,7 @@
         app:layout_constraintBottom_toTopOf="@id/tv_longitude_title"/>
 
     <TextView
+        android:id="@+id/tv_location_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/TaskTextStyle"

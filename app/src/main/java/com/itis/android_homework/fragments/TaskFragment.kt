@@ -1,9 +1,20 @@
 package com.itis.android_homework.fragments
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.itis.android_homework.MainActivity
 import com.itis.android_homework.R
@@ -14,12 +25,21 @@ import com.itis.android_homework.fragments.date_picker.DatePickerFragment
 import com.itis.android_homework.helpers.DateToStringConverter
 import java.util.*
 
+private const val REQUEST_CODE = 1
+
 class TaskFragment : Fragment(R.layout.task_fragment) {
 
     private var binding: TaskFragmentBinding? = null
     private lateinit var database: AppDatabase
+    private lateinit var client: FusedLocationProviderClient
     private var calendar: Calendar? = null
     private var currentTaskId: Int? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        client = LocationServices.getFusedLocationProviderClient(activity)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,6 +61,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
         }
 
         checkIfTaskExists()
+        setLocation()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -50,6 +71,68 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setLocation(){
+        if(checkPermissions() == true){
+            getCurrentLocation()
+        } else {
+            requestPermissions(arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ), REQUEST_CODE)
+        }
+    }
+
+    private fun checkPermissions(): Boolean? {
+        activity?.apply {
+            return (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+                    == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                    == PackageManager.PERMISSION_GRANTED)
+        }
+        return null
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if(requestCode == REQUEST_CODE && grantResults.isNotEmpty() &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            getCurrentLocation()
+        }
+        else {
+            showMessage("Permissions denied.")
+            returnToMainFragment()
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getCurrentLocation() {
+        val locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) or
+            locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            client.lastLocation.addOnCompleteListener{
+                val location = it.result
+                if(location != null) {
+                    binding?.etLongitude?.setText(location.longitude.toString())
+                    binding?.etLatitude?.setText(location.latitude.toString())
+                }
+            }
+        } else {
+            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
     }
 
@@ -70,14 +153,12 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
                 calendar?.time = it
                 tvDate.text = DateToStringConverter.convertDateToString(it)
                 tvDate.visibility = View.VISIBLE
-//                tvLongitude.text = ...
-//                tvLatitude.text = ...
             }
         }
     }
 
     private fun saveTask() {
-        currentTaskId?.let{
+        currentTaskId?.let {
             updateTask(it)
         }
         if (currentTaskId == null && isDataCorrect()) {
@@ -88,7 +169,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
     }
 
     private fun updateTask(id: Int) {
-        if(isDataCorrect()){
+        if (isDataCorrect()) {
             refreshData(id)
             showMessage("Successfully updated.")
             returnToMainFragment()
@@ -104,8 +185,6 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
                 calendar?.apply {
                     it.date = time
                 }
-//                it.longitude = tvLongitude.text.toString().toDouble()
-//                it.latitude = tvLatitude.text.toString().toDouble()
                 database.taskDao().updateTask(task)
             }
         }
@@ -113,13 +192,21 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
 
     private fun addTask() {
         binding?.apply {
+            val longitude = if (etLongitude.text.toString().isNotEmpty())
+                etLongitude.text.toString().toDouble()
+            else null
+
+            val latitude = if (etLatitude.text.toString().isNotEmpty())
+                etLatitude.text.toString().toDouble()
+            else null
+
             val newTask = Task(
                 0,
                 etTitle.text.toString(),
                 multEtDesc.text.toString(),
                 calendar?.time,
-                null,
-                null
+                longitude,
+                latitude
             )
             database.taskDao().save(newTask)
         }
@@ -173,6 +260,12 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
 
     private fun returnToMainFragment() {
         (activity as? MainActivity)?.onBackPressed()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(checkPermissions() == true)
+            getCurrentLocation()
     }
 
     override fun onDestroyView() {
