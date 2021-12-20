@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -113,7 +112,6 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
             getCurrentLocation()
         }
         else {
-            showMessage("Permissions denied.")
             returnToMainFragment()
         }
     }
@@ -163,7 +161,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
         }
         if (currentTaskId == null && isDataCorrect()) {
             addTask()
-            showMessage("Successfully save.")
+            showMessage("Задача успешно сохранена.")
             returnToMainFragment()
         }
     }
@@ -171,7 +169,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
     private fun updateTask(id: Int) {
         if (isDataCorrect()) {
             refreshData(id)
-            showMessage("Successfully updated.")
+            showMessage("Задача успешно обновлена.")
             returnToMainFragment()
         }
     }
@@ -215,11 +213,11 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
     private fun isDataCorrect(): Boolean {
         binding?.apply {
             if (etTitle.text.toString().isEmpty()) {
-                showMessage("No title added.")
+                showMessage("Заполните название.")
                 return false
             }
             if (multEtDesc.text.toString().isEmpty()) {
-                showMessage("No description added.")
+                showMessage("Заполните описание.")
                 return false
             }
         }

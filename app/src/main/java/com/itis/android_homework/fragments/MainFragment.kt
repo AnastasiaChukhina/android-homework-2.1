@@ -76,14 +76,14 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         if(binding?.rvTasks?.visibility == View.VISIBLE) {
             database.taskDao().deleteAllTasks()
             updateTasks()
-            showMessage("Successfully deleted all tasks.")
-        } else showMessage("You have no tasks to be deleted.")
+            showMessage("Все задачи успешно удалены.")
+        } else showMessage("Нет задач для удаления.")
     }
 
     private fun deleteTask(id: Int) {
         database.taskDao().deleteTaskById(id)
         updateTasks()
-        showMessage("Task successfully deleted.")
+        showMessage("Задача успешно удалена.")
     }
 
     private fun showTaskFragment(id: Int?) {
