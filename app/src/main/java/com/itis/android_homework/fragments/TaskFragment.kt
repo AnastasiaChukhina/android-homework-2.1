@@ -19,6 +19,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
     private var binding: TaskFragmentBinding? = null
     private lateinit var database: AppDatabase
     private var calendar: Calendar? = null
+    private var currentTaskId: Int? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,6 +39,8 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
                 showDatePicker()
             }
         }
+
+        checkIfTaskExists()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -50,22 +53,72 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
         }
     }
 
+    private fun checkIfTaskExists() {
+        arguments?.getInt("ARG_TASK_ID")?.let {
+            currentTaskId = it
+            setTaskEditingView(it)
+        }
+    }
+
+    private fun setTaskEditingView(id: Int) {
+        val task = database.taskDao().getTaskById(id)
+        binding?.apply {
+            etTitle.setText(task?.title)
+            multEtDesc.setText(task?.description)
+            task?.date?.let {
+                calendar = Calendar.getInstance()
+                calendar?.time = it
+                tvDate.text = DateToStringConverter.convertDateToString(it)
+                tvDate.visibility = View.VISIBLE
+//                tvLongitude.text = ...
+//                tvLatitude.text = ...
+            }
+        }
+    }
+
     private fun saveTask() {
-        if(isDataCorrect()){
+        currentTaskId?.let{
+            updateTask(it)
+        }
+        if (currentTaskId == null && isDataCorrect()) {
             addTask()
             showMessage("Successfully save.")
             returnToMainFragment()
         }
     }
 
-    private fun addTask(){
+    private fun updateTask(id: Int) {
+        if(isDataCorrect()){
+            refreshData(id)
+            showMessage("Successfully updated.")
+            returnToMainFragment()
+        }
+    }
+
+    private fun refreshData(id: Int) {
+        val task = database.taskDao().getTaskById(id)
+        binding?.apply {
+            task?.let {
+                it.title = etTitle.text.toString()
+                it.description = multEtDesc.text.toString()
+                calendar?.apply {
+                    it.date = time
+                }
+//                it.longitude = tvLongitude.text.toString().toDouble()
+//                it.latitude = tvLatitude.text.toString().toDouble()
+                database.taskDao().updateTask(task)
+            }
+        }
+    }
+
+    private fun addTask() {
         binding?.apply {
             val newTask = Task(
                 0,
                 etTitle.text.toString(),
                 multEtDesc.text.toString(),
                 calendar?.time,
-            null,
+                null,
                 null
             )
             database.taskDao().save(newTask)
@@ -74,11 +127,11 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
 
     private fun isDataCorrect(): Boolean {
         binding?.apply {
-            if(etTitle.text.toString().isEmpty()){
+            if (etTitle.text.toString().isEmpty()) {
                 showMessage("No title added.")
                 return false
             }
-            if(multEtDesc.text.toString().isEmpty()){
+            if (multEtDesc.text.toString().isEmpty()) {
                 showMessage("No description added.")
                 return false
             }
@@ -94,7 +147,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
         supportFragmentManager.setFragmentResultListener(
             "REQUEST_KEY",
             viewLifecycleOwner
-        ){resultKey, bundle ->
+        ) { resultKey, bundle ->
             if (resultKey == "REQUEST_KEY") {
                 calendar?.timeInMillis = bundle.getLong("SELECTED_DATE")
                 setDate(calendar)
@@ -118,7 +171,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
         ).show()
     }
 
-    private fun returnToMainFragment(){
+    private fun returnToMainFragment() {
         (activity as? MainActivity)?.onBackPressed()
     }
 

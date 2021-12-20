@@ -8,13 +8,13 @@ data class Task(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     @ColumnInfo(name = "title")
-    val title: String,
+    var title: String,
     @ColumnInfo(name = "description")
-    val description: String,
+    var description: String,
     @ColumnInfo(name = "date")
-    val date: Date?,
+    var date: Date?,
     @ColumnInfo(name = "longitude")
-    val longitude: Double?,
+    var longitude: Double?,
     @ColumnInfo(name = "latitude")
-    val latitude: Double?
+    var latitude: Double?
 )
