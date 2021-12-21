@@ -1,4 +1,4 @@
-package com.itis.android_homework
+package com.itis.android_homework.extensions
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
