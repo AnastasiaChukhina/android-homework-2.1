@@ -10,6 +10,6 @@ object DateToStringConverter {
             val dateFormat = SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault())
             dateFormat.format(date)
         }
-        else "No date selected"
+        else "Дата не выбрана"
     }
 }
