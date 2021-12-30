@@ -9,7 +9,11 @@ import com.itis.android_homework.data.dao.TaskDao
 import com.itis.android_homework.data.entity.DateConverter
 import com.itis.android_homework.data.entity.Task
 
-@Database(entities = [Task::class], version = 1)
+@Database(
+    entities = [Task::class],
+    version = 2,
+    exportSchema = true
+)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -33,8 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME)
-                    .allowMainThreadQueries()
-                    .fallbackToDestructiveMigration()
-                    .build()
+                .fallbackToDestructiveMigration()
+                .build()
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -15,6 +16,9 @@ import com.itis.android_homework.data.AppDatabase
 import com.itis.android_homework.data.entity.Task
 import com.itis.android_homework.databinding.MainFragmentBinding
 import com.itis.android_homework.item_decorator.SpaceItemDecorator
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.coroutineContext
 
 class MainFragment : Fragment(R.layout.main_fragment) {
 
@@ -22,6 +26,8 @@ class MainFragment : Fragment(R.layout.main_fragment) {
     private var taskAdapter: TaskAdapter? = null
     private lateinit var database: AppDatabase
     private lateinit var tasks: List<Task>
+
+    private val scope = CoroutineScope(Dispatchers.Main)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,7 +51,9 @@ class MainFragment : Fragment(R.layout.main_fragment) {
                 addItemDecoration(SpaceItemDecorator(context))
             }
         }
-        updateTasks()
+        scope.launch(Dispatchers.Default) {
+            updateTasks()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -59,7 +67,16 @@ class MainFragment : Fragment(R.layout.main_fragment) {
     }
 
     private fun updateTasks() {
-        tasks = database.taskDao().getAllTasks()
+        scope.launch {
+            updateView(
+                withContext(scope.coroutineContext) {
+                    database.taskDao().getAllTasks()
+                }
+            )
+        }
+    }
+
+    private fun updateView(tasks: List<Task>) {
         binding?.apply {
             if (tasks.isEmpty()) {
                 tvNoTasksAdded.visibility = View.VISIBLE
@@ -73,17 +90,29 @@ class MainFragment : Fragment(R.layout.main_fragment) {
     }
 
     private fun deleteAllTasks() {
-        if(binding?.rvTasks?.visibility == View.VISIBLE) {
-            database.taskDao().deleteAllTasks()
-            updateTasks()
+        if (binding?.rvTasks?.visibility == View.VISIBLE) {
+            removeAll()
             showMessage("Все задачи успешно удалены.")
         } else showMessage("Нет задач для удаления.")
     }
 
     private fun deleteTask(id: Int) {
-        database.taskDao().deleteTaskById(id)
-        updateTasks()
+        deleteTaskById(id)
         showMessage("Задача успешно удалена.")
+    }
+
+    private fun removeAll() {
+        scope.launch {
+            database.taskDao().deleteAllTasks()
+            updateTasks()
+        }
+    }
+
+    private fun deleteTaskById(id: Int) {
+        scope.launch {
+            database.taskDao().deleteTaskById(id)
+            updateTasks()
+        }
     }
 
     private fun showTaskFragment(id: Int?) {
@@ -117,6 +146,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
     }
 
     override fun onDestroyView() {
+        scope.cancel()
         super.onDestroyView()
         binding = null
     }
