@@ -22,7 +22,9 @@ import com.itis.android_homework.data.entity.Task
 import com.itis.android_homework.databinding.TaskFragmentBinding
 import com.itis.android_homework.fragments.date_picker.DatePickerFragment
 import com.itis.android_homework.helpers.DateToStringConverter
+import kotlinx.coroutines.*
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 private const val REQUEST_CODE = 1
 
@@ -33,6 +35,8 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
     private lateinit var client: FusedLocationProviderClient
     private var calendar: Calendar? = null
     private var currentTaskId: Int? = null
+
+    private val scope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +62,6 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
                 showDatePicker()
             }
         }
-
         checkIfTaskExists()
         setLocation()
     }
@@ -66,21 +69,23 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.icon_save -> {
-                saveTask()
+                saveChanges()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun setLocation(){
-        if(checkPermissions() == true){
+    private fun setLocation() {
+        if (checkPermissions() == true) {
             getCurrentLocation()
         } else {
-            requestPermissions(arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ), REQUEST_CODE)
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ), REQUEST_CODE
+            )
         }
     }
 
@@ -107,30 +112,32 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if(requestCode == REQUEST_CODE && grantResults.isNotEmpty() &&
-            grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == REQUEST_CODE && grantResults.isNotEmpty() &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED
+        ) {
             getCurrentLocation()
-        }
-        else {
-            returnToMainFragment()
         }
     }
 
     @SuppressLint("MissingPermission")
     private fun getCurrentLocation() {
-        val locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) or
-            locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
-            client.lastLocation.addOnCompleteListener{
+        val locationManager =
+            activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) or
+            locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        ) {
+            client.lastLocation.addOnCompleteListener {
                 val location = it.result
-                if(location != null) {
+                if (location != null) {
                     binding?.etLongitude?.setText(location.longitude.toString())
                     binding?.etLatitude?.setText(location.latitude.toString())
                 }
             }
         } else {
-            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            startActivity(
+                Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
         }
     }
 
@@ -142,22 +149,24 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
     }
 
     private fun setTaskEditingView(id: Int) {
-        val task = database.taskDao().getTaskById(id)
-        binding?.apply {
-            etTitle.setText(task?.title)
-            multEtDesc.setText(task?.description)
-            task?.date?.let {
-                calendar = Calendar.getInstance()
-                calendar?.time = it
-                tvDate.text = DateToStringConverter.convertDateToString(it)
-                tvDate.visibility = View.VISIBLE
+        scope.launch {
+            val task = database.taskDao().getTaskById(id)
+            binding?.apply {
+                etTitle.setText(task?.title)
+                multEtDesc.setText(task?.description)
+                task?.date?.let {
+                    calendar = Calendar.getInstance()
+                    calendar?.time = it
+                    tvDate.text = DateToStringConverter.convertDateToString(it)
+                    tvDate.visibility = View.VISIBLE
+                }
             }
         }
     }
 
-    private fun saveTask() {
+    private fun saveChanges() {
         currentTaskId?.let {
-            updateTask(it)
+            updateTaskData(it)
         }
         if (currentTaskId == null && isDataCorrect()) {
             addTask()
@@ -166,7 +175,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
         }
     }
 
-    private fun updateTask(id: Int) {
+    private fun updateTaskData(id: Int) {
         if (isDataCorrect()) {
             refreshData(id)
             showMessage("Задача успешно обновлена.")
@@ -175,15 +184,17 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
     }
 
     private fun refreshData(id: Int) {
-        val task = database.taskDao().getTaskById(id)
-        binding?.apply {
-            task?.let {
-                it.title = etTitle.text.toString()
-                it.description = multEtDesc.text.toString()
-                calendar?.apply {
-                    it.date = time
+        scope.launch {
+            val task = database.taskDao().getTaskById(id)
+            binding?.apply {
+                task?.let {
+                    it.title = etTitle.text.toString()
+                    it.description = multEtDesc.text.toString()
+                    calendar?.apply {
+                        it.date = time
+                    }
+                    database.taskDao().updateTask(task)
                 }
-                database.taskDao().updateTask(task)
             }
         }
     }
@@ -206,6 +217,12 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
                 longitude,
                 latitude
             )
+            saveNewTask(newTask)
+        }
+    }
+
+    private fun saveNewTask(newTask: Task) {
+        scope.launch {
             database.taskDao().save(newTask)
         }
     }
@@ -262,11 +279,12 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
 
     override fun onResume() {
         super.onResume()
-        if(checkPermissions() == true)
+        if (checkPermissions() == true)
             getCurrentLocation()
     }
 
     override fun onDestroyView() {
+        scope.cancel()
         super.onDestroyView()
         binding = null
     }
